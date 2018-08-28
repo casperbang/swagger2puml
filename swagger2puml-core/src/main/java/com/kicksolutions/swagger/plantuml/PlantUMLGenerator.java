@@ -5,6 +5,13 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+import java.nio.file.Paths;
+import java.nio.file.Path;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+
 import io.swagger.models.Swagger;
 import io.swagger.parser.SwaggerParser;
 
@@ -43,6 +50,15 @@ public class PlantUMLGenerator
     			pumlPath = codegen.generatePuml();    		
     			LOGGER.info("Sucessfully Create PUML !!!");
     			
+                        // Attempt to fix issue...
+                        /*
+                        Path path = Paths.get(pumlPath);
+                        Charset charset = StandardCharsets.UTF_8;
+                        String content = new String(Files.readAllBytes(path), charset);
+                        content = content.replaceAll("/\\{query\\}", "");
+                        Files.write(path, content.getBytes(charset));
+                        */
+                        
     			if(generateSvg)
     			{
     				generateUMLDiagram(pumlPath, targetLocation);

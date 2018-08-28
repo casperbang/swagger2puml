@@ -545,13 +545,24 @@ public class PlantUMLCodegen {
 	private String getInterfaceName(List<String> tags, Operation operation, String uri) {
 		String interfaceName;
 
+                System.out.println("Processing raw interface: " + uri);
+                
 		if (!tags.isEmpty()) {
-			interfaceName = toTitleCase(tags.get(0).replaceAll(" ", ""));
+                        System.out.println("Tag is non-empty");
+                        
+                        interfaceName = tags.get(0).replaceFirst("\\{.*?\\}", "").replaceAll("/", "");
+                        
 		}else if (StringUtils.isNotEmpty(operation.getOperationId())) {
+                        System.out.println("Tag is empty but has Operation");
 			interfaceName = toTitleCase(operation.getOperationId());
 		}else {
-			interfaceName = toTitleCase(uri.replaceAll("{", "").replaceAll("}", "").replaceAll("\\", ""));
+                        System.out.println("Tag is empty and have no operation");
+                        interfaceName = toTitleCase(uri.replaceAll("{", "").replaceAll("}", "").replaceAll("\\", ""));
 		}
+                
+                if(interfaceName.startsWith("/")){
+                    interfaceName = interfaceName.substring(1,2).toUpperCase() + interfaceName.substring(2);
+                }
 
 		return new StringBuilder().append(interfaceName).append("Api").toString();
 	}
